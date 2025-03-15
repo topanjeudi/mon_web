@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Tableau de bord de l'Agent</h2>
+        <h3>Ventes de produits</h3>
+
+        <form method="POST">
+            <label for="produit">Produit :</label>
+            <select name="produit" id="produit">
+                {% for produit in produits %}
+                    <option value="{{ produit['nom'] }}">{{ produit['nom'] }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="quantite">Quantité :</label>
+            <input type="number" id="quantite" name="quantite" min="1" required>
+
+            <label for="prix">Prix :</label>
+            <input type="number" id="prix" name="prix" step="0.01" required>
+
+            <button type="submit">Vendre</button>
+        </form>
+
+        <h3>Liste des produits disponibles :</h3>
+        <ul>
+            {% for produit in produits %}
+                <li>{{ produit['nom'] }} - {{ produit['quantite'] }} en stock</li>
+            {% endfor %}
+        </ul>
+
+        <a href="{{ url_for('home') }}">Retour à la page d'accueil</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Administrateur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h2>Tableau de bord Administrateur</h2>
+
+        <h3>Agents</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Validation</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agent in agents %}
+                    <tr>
+                        <td>{{ agent['prenom'] }}</td>
+                        <td>{{ 'Validé' if agent['validé'] else 'Non validé' }}</td>
+                        <td>
+                            {% if not agent['validé'] %}
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="action" value="valider_agent">
+                                    <input type="hidden" name="agent_id" value="{{ agent['prenom'] }}">
+                                    <button type="submit">Valider</button>
+                                </form>
+                            {% endif %}
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="action" value="supprimer_agent">
+                                <input type="hidden" name="agent_id" value="{{ agent['prenom'] }}">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Produits</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prix initial</th>
+                    <th>Prix vendu</th>
+                    <th>Quantité</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produit in produits %}
+                    <tr>
+                        <td>{{ produit['nom'] }}</td>
+                        <td>{{ produit['prix_initial'] }} €</td>
+                        <td>{{ produit['prix_vendu'] }} €</td>
+                        <td>{{ produit['quantite'] }}</td>
+                        <td>
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="action" value="modifier_produit">
+                                <input type="hidden" name="produit_id" value="{{ produit['nom'] }}">
+                                <button type="submit">Modifier</button>
+                            </form>
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="action" value="supprimer_produit">
+                                <input type="hidden" name="produit_id" value="{{ produit['nom'] }}">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Ajouter un produit</h3>
+        <form method="POST">
+            <label for="nom">Nom du produit :</label>
+            <input type="text" id="nom" name="nom" required>
+
+            <label for="prix_initial">Prix initial :</label>
+            <input type="number" id="prix_initial" name="prix_initial" step="0.01" required>
+
+            <label for="prix_vendu">Prix vendu :</label>
+            <input type="number" id="prix_vendu" name="prix_vendu" step="0.01" required>
+
+            <label for="quantite">Quantité :</label>
+            <input type="number" id="quantite" name="quantite" required>
+
+            <button type="submit" name="action" value="ajouter_produit">Ajouter</button>
+        </form>
+
+        <a href="{{ url_for('home') }}">Retour à la page d'accueil</a>
+    </div>
+</body>
+</html>

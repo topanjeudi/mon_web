@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Administrateur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Connexion Administrateur</h2>
+        <form method="POST">
+            <label for="code">Code Admin :</label>
+            <input type="password" id="code" name="code" required>
+            <button type="submit">Se connecter</button>
+        </form>
+        {% if request.method == 'POST' %}
+            <p style="color:red;">Code incorrect.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
